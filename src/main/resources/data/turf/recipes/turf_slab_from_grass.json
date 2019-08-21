@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shaped",
+    "group": "turf_slab",
+	"pattern": [
+		"GG"
+	],
+	"key": {
+		"G": { "item": "minecraft:grass" }
+	},
+	"result": { "item": "turf:turf_slab" }
+}

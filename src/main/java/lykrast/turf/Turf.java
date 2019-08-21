@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -46,7 +48,8 @@ public class Turf {
 		blockitems = new ArrayList<>();
 		IForgeRegistry<Block> reg = event.getRegistry();
 		reg.registerAll(
-				makeBlock("turf", new Block(grassProperties()))
+				makeBlock("turf", new Block(grassProperties())),
+				makeBlock("turf_slab", new SlabBlock(grassProperties()))
 				);
 		for (DyeColor color : DyeColor.values()) {
 			reg.register(makeBlock(color.getTranslationKey() + "_turf", new Block(grassProperties())));
@@ -68,7 +71,8 @@ public class Turf {
 	
 	private static Block.Properties grassProperties() {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
-		return Block.Properties.create(Material.ORGANIC).hardnessAndResistance(0.6F).sound(SoundType.PLANT);
+		//Also harvest tool, that's a forge thing
+		return Block.Properties.create(Material.ORGANIC).hardnessAndResistance(0.6F).sound(SoundType.PLANT).harvestTool(ToolType.SHOVEL);
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
@@ -77,8 +81,8 @@ public class Turf {
 		
 		//Copy pasted and simplified the grass one
 		bcolors.register((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5, 1),
-				Holders.TURF);
-		icolors.register((stack, tintIndex) -> GrassColors.get(0.5, 1), Holders.TURF.asItem());
+				Holders.TURF, Holders.TURF_SLAB);
+		icolors.register((stack, tintIndex) -> GrassColors.get(0.5, 1), Holders.TURF.asItem(), Holders.TURF_SLAB.asItem());
 		
 		//That's the part where I should make a loop
 		int white = DyeColor.WHITE.getMapColor().colorValue;
@@ -134,6 +138,8 @@ public class Turf {
 	@ObjectHolder(Turf.MODID)
 	public static class Holders {
 		public static final Block TURF = null;
+		public static final Block TURF_SLAB = null;
+		
 		public static final Block WHITE_TURF = null;
 		public static final Block ORANGE_TURF = null;
 		public static final Block MAGENTA_TURF = null;
