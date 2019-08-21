@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "dyed_turf",
+	"pattern": [
+		"###",
+		"#X#",
+		"###"
+	],
+	"key": {
+		"#": { "tag": "turf:turf/basic" },
+		"X": { "tag": "forge:dyes/light_gray" }
+	},
+	"result": { "item": "turf:light_gray_turf", "count": 8 }
+}
