@@ -1,0 +1,21 @@
+{
+	"replace": false,
+	"values": [
+		"turf:white_turf",
+		"turf:orange_turf",
+		"turf:magenta_turf",
+		"turf:light_blue_turf",
+		"turf:yellow_turf",
+		"turf:lime_turf",
+		"turf:pink_turf",
+		"turf:gray_turf",
+		"turf:light_gray_turf",
+		"turf:cyan_turf",
+		"turf:purple_turf",
+		"turf:blue_turf",
+		"turf:brown_turf",
+		"turf:green_turf",
+		"turf:red_turf",
+		"turf:black_turf"
+	]
+}
