@@ -1,6 +1,21 @@
 {
     "block.turf.turf": "Turf",
     "block.turf.white_turf": "White Turf",
+    "block.turf.orange_turf": "Orange Turf",
+    "block.turf.magenta_turf": "Magenta Turf",
+    "block.turf.light_blue_turf": "Light Blue Turf",
+    "block.turf.yellow_turf": "Yellow Turf",
+    "block.turf.lime_turf": "Lime Turf",
+    "block.turf.pink_turf": "Pink Turf",
+    "block.turf.gray_turf": "Gray Turf",
+    "block.turf.light_gray_turf": "Light Gray Turf",
+    "block.turf.cyan_turf": "Cyan Turf",
+    "block.turf.purple_turf": "Purple Turf",
+    "block.turf.blue_turf": "Blue Turf",
+    "block.turf.brown_turf": "Brown Turf",
+    "block.turf.green_turf": "Green Turf",
+    "block.turf.red_turf": "Red Turf",
+    "block.turf.black_turf": "Black Turf",
 	
-    "itemGroup.turf.items": "Turf"
+    "itemGroup.turf": "Turf"
 }
