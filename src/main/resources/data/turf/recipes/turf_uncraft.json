@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:crafting_shapeless",
+    "group": "grass",
+	"ingredients": [
+		{ "item": "turf:turf" }
+	],
+	"result": { "item": "minecraft:grass", "count": 4 }
+}
