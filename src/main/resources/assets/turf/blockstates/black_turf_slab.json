@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "turf:block/turf_slab" },
+        "type=top": { "model": "turf:block/turf_slab_top" },
+        "type=double": { "model": "turf:block/turf" }
+    }
+}

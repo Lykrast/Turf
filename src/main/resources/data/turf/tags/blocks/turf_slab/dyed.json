@@ -1,0 +1,21 @@
+{
+	"replace": false,
+	"values": [
+		"turf:white_turf_slab",
+		"turf:orange_turf_slab",
+		"turf:magenta_turf_slab",
+		"turf:light_blue_turf_slab",
+		"turf:yellow_turf_slab",
+		"turf:lime_turf_slab",
+		"turf:pink_turf_slab",
+		"turf:gray_turf_slab",
+		"turf:light_gray_turf_slab",
+		"turf:cyan_turf_slab",
+		"turf:purple_turf_slab",
+		"turf:blue_turf_slab",
+		"turf:brown_turf_slab",
+		"turf:green_turf_slab",
+		"turf:red_turf_slab",
+		"turf:black_turf_slab"
+	]
+}
