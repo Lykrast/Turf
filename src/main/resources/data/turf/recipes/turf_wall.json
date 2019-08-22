@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shaped",
+    "group": "turf_wall",
+	"pattern": [
+		"###",
+		"###"
+	],
+	"key": {
+		"#": { "item": "turf:turf" }
+	},
+	"result": { "item": "turf:turf_wall", "count": 6 }
+}

@@ -1,0 +1,12 @@
+{
+	"type": "minecraft:crafting_shaped",
+    "group": "dyed_turf_wall",
+	"pattern": [
+		"###",
+		"###"
+	],
+	"key": {
+		"#": { "item": "turf:light_blue_turf" }
+	},
+	"result": { "item": "turf:light_blue_turf_wall", "count": 6 }
+}
