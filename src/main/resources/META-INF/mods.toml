@@ -6,11 +6,11 @@ issueTrackerURL="https://github.com/Lykrast/Turf/issues"
 modId="turf"
 version="${version}"
 displayName="Turf"
-displayURL="CHANGEIT"
-credits="Quark for inspiration"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/turf"
+credits="Quark for inspiration, DarkCow for the idea of dying them"
 authors="Lykrast"
 description='''
-Turf blocks which are non decaying grass on all sides, for decoration. Can be dyed and made into stairs and stuff.
+Turf blocks which are non decaying grass on all sides, for decoration. Can be dyed and made into stairs, slabs and walls.
 '''
 
 [[dependencies.turf]]
