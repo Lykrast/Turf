@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "dyed_turf_slab",
+	"pattern": [
+		"###"
+	],
+	"key": {
+		"#": { "item": "turf:lime_turf" }
+	},
+	"result": { "item": "turf:lime_turf_slab", "count": 6 }
+}

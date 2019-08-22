@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "dyed_turf_slab",
+	"pattern": [
+		"###"
+	],
+	"key": {
+		"#": { "item": "turf:purple_turf" }
+	},
+	"result": { "item": "turf:purple_turf_slab", "count": 6 }
+}
