@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shaped",
+    "group": "turf_stairs",
+	"pattern": [
+		"#  ",
+		"## ",
+		"###"
+	],
+	"key": {
+		"#": { "item": "turf:turf" }
+	},
+	"result": { "item": "turf:turf_stairs", "count": 8 }
+}
