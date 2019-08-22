@@ -47,16 +47,13 @@ public class Turf {
 	public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 		blockitems = new ArrayList<>();
 		IForgeRegistry<Block> reg = event.getRegistry();
+		Block turf = makeBlock("turf", new Block(grassProperties()));
 		reg.registerAll(
-				makeBlock("turf", new Block(grassProperties())),
-				makeBlock("turf_slab", new SlabBlock(grassProperties()))
+				turf,
+				makeBlock("turf_slab", new SlabBlock(grassProperties())),
+				makeBlock("turf_stairs", new UseableStairsBlock(turf.getDefaultState(), grassProperties()))
 				);
-		for (DyeColor color : DyeColor.values()) {
-			reg.registerAll(
-					makeBlock(color.getTranslationKey() + "_turf", new Block(grassProperties())),
-					makeBlock(color.getTranslationKey() + "_turf_slab", new SlabBlock(grassProperties()))
-					);
-		}
+		for (DyeColor color : DyeColor.values()) makeDyed(color, reg);
 	}
 
 	@SubscribeEvent
@@ -72,6 +69,16 @@ public class Turf {
 		return block;
 	}
 	
+	private static void makeDyed(DyeColor color, IForgeRegistry<Block> reg) {
+		String name = color.getTranslationKey();
+		Block turf = makeBlock(name + "_turf", new Block(grassProperties()));
+		reg.registerAll(
+					turf,
+					makeBlock(name + "_turf_slab", new SlabBlock(grassProperties())),
+					makeBlock(name + "_turf_stairs", new UseableStairsBlock(turf.getDefaultState(), grassProperties()))
+					);
+	}
+	
 	private static Block.Properties grassProperties() {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
 		//Also harvest tool, that's a forge thing
@@ -84,96 +91,130 @@ public class Turf {
 		
 		//Copy pasted and simplified the grass one
 		bcolors.register((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5, 1),
-				Holders.TURF, Holders.TURF_SLAB);
-		icolors.register((stack, tintIndex) -> GrassColors.get(0.5, 1), Holders.TURF.asItem(), Holders.TURF_SLAB.asItem());
+				Holders.TURF, Holders.TURF_SLAB, Holders.TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> GrassColors.get(0.5, 1), Holders.TURF.asItem(), Holders.TURF_SLAB.asItem(), Holders.TURF_STAIRS.asItem());
 		
 		//That's the part where I should make a loop
 		int white = DyeColor.WHITE.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> white, Holders.WHITE_TURF, Holders.WHITE_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> white, Holders.WHITE_TURF.asItem(), Holders.WHITE_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> white, Holders.WHITE_TURF, Holders.WHITE_TURF_SLAB, Holders.WHITE_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> white, Holders.WHITE_TURF.asItem(), Holders.WHITE_TURF_SLAB.asItem(), Holders.WHITE_TURF_STAIRS.asItem());
 		int orange = DyeColor.ORANGE.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> orange, Holders.ORANGE_TURF, Holders.ORANGE_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> orange, Holders.ORANGE_TURF.asItem(), Holders.ORANGE_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> orange, Holders.ORANGE_TURF, Holders.ORANGE_TURF_SLAB, Holders.ORANGE_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> orange, Holders.ORANGE_TURF.asItem(), Holders.ORANGE_TURF_SLAB.asItem(), Holders.ORANGE_TURF_STAIRS.asItem());
 		int magenta = DyeColor.MAGENTA.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> magenta, Holders.MAGENTA_TURF, Holders.MAGENTA_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> magenta, Holders.MAGENTA_TURF.asItem(), Holders.MAGENTA_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> magenta, Holders.MAGENTA_TURF, Holders.MAGENTA_TURF_SLAB, Holders.MAGENTA_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> magenta, Holders.MAGENTA_TURF.asItem(), Holders.MAGENTA_TURF_SLAB.asItem(), Holders.MAGENTA_TURF_STAIRS.asItem());
 		int lightBlue = DyeColor.LIGHT_BLUE.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> lightBlue, Holders.LIGHT_BLUE_TURF, Holders.LIGHT_BLUE_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> lightBlue, Holders.LIGHT_BLUE_TURF.asItem(), Holders.LIGHT_BLUE_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> lightBlue, Holders.LIGHT_BLUE_TURF, Holders.LIGHT_BLUE_TURF_SLAB, Holders.LIGHT_BLUE_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> lightBlue, Holders.LIGHT_BLUE_TURF.asItem(), Holders.LIGHT_BLUE_TURF_SLAB.asItem(), Holders.LIGHT_BLUE_TURF_STAIRS.asItem());
 		int yellow = DyeColor.YELLOW.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> yellow, Holders.YELLOW_TURF, Holders.YELLOW_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> yellow, Holders.YELLOW_TURF.asItem(), Holders.YELLOW_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> yellow, Holders.YELLOW_TURF, Holders.YELLOW_TURF_SLAB, Holders.YELLOW_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> yellow, Holders.YELLOW_TURF.asItem(), Holders.YELLOW_TURF_SLAB.asItem(), Holders.YELLOW_TURF_STAIRS.asItem());
 		int lime = DyeColor.LIME.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> lime, Holders.LIME_TURF, Holders.LIME_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> lime, Holders.LIME_TURF.asItem(), Holders.LIME_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> lime, Holders.LIME_TURF, Holders.LIME_TURF_SLAB, Holders.LIME_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> lime, Holders.LIME_TURF.asItem(), Holders.LIME_TURF_SLAB.asItem(), Holders.LIME_TURF_STAIRS.asItem());
 		int pink = DyeColor.PINK.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> pink, Holders.PINK_TURF, Holders.PINK_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> pink, Holders.PINK_TURF.asItem(), Holders.PINK_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> pink, Holders.PINK_TURF, Holders.PINK_TURF_SLAB, Holders.PINK_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> pink, Holders.PINK_TURF.asItem(), Holders.PINK_TURF_SLAB.asItem(), Holders.PINK_TURF_STAIRS.asItem());
 		int gray = DyeColor.GRAY.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> gray, Holders.GRAY_TURF, Holders.GRAY_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> gray, Holders.GRAY_TURF.asItem(), Holders.GRAY_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> gray, Holders.GRAY_TURF, Holders.GRAY_TURF_SLAB, Holders.GRAY_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> gray, Holders.GRAY_TURF.asItem(), Holders.GRAY_TURF_SLAB.asItem(), Holders.GRAY_TURF_STAIRS.asItem());
 		int lightGray = DyeColor.LIGHT_GRAY.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> lightGray, Holders.LIGHT_GRAY_TURF, Holders.LIGHT_GRAY_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> lightGray, Holders.LIGHT_GRAY_TURF.asItem(), Holders.LIGHT_GRAY_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> lightGray, Holders.LIGHT_GRAY_TURF, Holders.LIGHT_GRAY_TURF_SLAB, Holders.LIGHT_GRAY_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> lightGray, Holders.LIGHT_GRAY_TURF.asItem(), Holders.LIGHT_GRAY_TURF_SLAB.asItem(), Holders.LIGHT_GRAY_TURF_STAIRS.asItem());
 		int cyan = DyeColor.CYAN.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> cyan, Holders.CYAN_TURF, Holders.CYAN_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> cyan, Holders.CYAN_TURF.asItem(), Holders.CYAN_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> cyan, Holders.CYAN_TURF, Holders.CYAN_TURF_SLAB, Holders.CYAN_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> cyan, Holders.CYAN_TURF.asItem(), Holders.CYAN_TURF_SLAB.asItem(), Holders.CYAN_TURF_STAIRS.asItem());
 		int purple = DyeColor.PURPLE.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> purple, Holders.PURPLE_TURF, Holders.PURPLE_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> purple, Holders.PURPLE_TURF.asItem(), Holders.PURPLE_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> purple, Holders.PURPLE_TURF, Holders.PURPLE_TURF_SLAB, Holders.PURPLE_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> purple, Holders.PURPLE_TURF.asItem(), Holders.PURPLE_TURF_SLAB.asItem(), Holders.PURPLE_TURF_STAIRS.asItem());
 		int blue = DyeColor.BLUE.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> blue, Holders.BLUE_TURF, Holders.BLUE_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> blue, Holders.BLUE_TURF.asItem(), Holders.BLUE_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> blue, Holders.BLUE_TURF, Holders.BLUE_TURF_SLAB, Holders.BLUE_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> blue, Holders.BLUE_TURF.asItem(), Holders.BLUE_TURF_SLAB.asItem(), Holders.BLUE_TURF_STAIRS.asItem());
 		int brown = DyeColor.BROWN.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> brown, Holders.BROWN_TURF, Holders.BROWN_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> brown, Holders.BROWN_TURF.asItem(), Holders.BROWN_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> brown, Holders.BROWN_TURF, Holders.BROWN_TURF_SLAB, Holders.BROWN_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> brown, Holders.BROWN_TURF.asItem(), Holders.BROWN_TURF_SLAB.asItem(), Holders.BROWN_TURF_STAIRS.asItem());
 		int green = DyeColor.GREEN.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> green, Holders.GREEN_TURF, Holders.GREEN_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> green, Holders.GREEN_TURF.asItem(), Holders.GREEN_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> green, Holders.GREEN_TURF, Holders.GREEN_TURF_SLAB, Holders.GREEN_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> green, Holders.GREEN_TURF.asItem(), Holders.GREEN_TURF_SLAB.asItem(), Holders.GREEN_TURF_STAIRS.asItem());
 		int red = DyeColor.RED.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> red, Holders.RED_TURF, Holders.RED_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> red, Holders.RED_TURF.asItem(), Holders.RED_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> red, Holders.RED_TURF, Holders.RED_TURF_SLAB, Holders.RED_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> red, Holders.RED_TURF.asItem(), Holders.RED_TURF_SLAB.asItem(), Holders.RED_TURF_STAIRS.asItem());
 		int black = DyeColor.BLACK.getMapColor().colorValue;
-		bcolors.register((state, world, pos, tintIndex) -> black, Holders.BLACK_TURF, Holders.BLACK_TURF_SLAB);
-		icolors.register((stack, tintIndex) -> black, Holders.BLACK_TURF.asItem(), Holders.BLACK_TURF_SLAB.asItem());
+		bcolors.register((state, world, pos, tintIndex) -> black, Holders.BLACK_TURF, Holders.BLACK_TURF_SLAB, Holders.BLACK_TURF_STAIRS);
+		icolors.register((stack, tintIndex) -> black, Holders.BLACK_TURF.asItem(), Holders.BLACK_TURF_SLAB.asItem(), Holders.BLACK_TURF_STAIRS.asItem());
 	}
 	
 	@ObjectHolder(Turf.MODID)
 	public static class Holders {
 		public static final Block TURF = null;
 		public static final Block TURF_SLAB = null;
+		public static final Block TURF_STAIRS = null;
+		public static final Block TURF_WALL = null;
 		
 		public static final Block WHITE_TURF = null;
 		public static final Block WHITE_TURF_SLAB = null;
+		public static final Block WHITE_TURF_STAIRS = null;
+		public static final Block WHITE_TURF_WALL = null;
 		public static final Block ORANGE_TURF = null;
 		public static final Block ORANGE_TURF_SLAB = null;
+		public static final Block ORANGE_TURF_STAIRS = null;
+		public static final Block ORANGE_TURF_WALL = null;
 		public static final Block MAGENTA_TURF = null;
 		public static final Block MAGENTA_TURF_SLAB = null;
+		public static final Block MAGENTA_TURF_STAIRS = null;
+		public static final Block MAGENTA_TURF_WALL = null;
 		public static final Block LIGHT_BLUE_TURF = null;
 		public static final Block LIGHT_BLUE_TURF_SLAB = null;
+		public static final Block LIGHT_BLUE_TURF_STAIRS = null;
+		public static final Block LIGHT_BLUE_TURF_WALL = null;
 		public static final Block YELLOW_TURF = null;
 		public static final Block YELLOW_TURF_SLAB = null;
+		public static final Block YELLOW_TURF_STAIRS = null;
+		public static final Block YELLOW_TURF_WALL = null;
 		public static final Block LIME_TURF = null;
 		public static final Block LIME_TURF_SLAB = null;
+		public static final Block LIME_TURF_STAIRS = null;
+		public static final Block LIME_TURF_WALL = null;
 		public static final Block GRAY_TURF = null;
 		public static final Block GRAY_TURF_SLAB = null;
+		public static final Block GRAY_TURF_STAIRS = null;
+		public static final Block GRAY_TURF_WALL = null;
 		public static final Block PINK_TURF = null;
 		public static final Block PINK_TURF_SLAB = null;
+		public static final Block PINK_TURF_STAIRS = null;
+		public static final Block PINK_TURF_WALL = null;
 		public static final Block LIGHT_GRAY_TURF = null;
 		public static final Block LIGHT_GRAY_TURF_SLAB = null;
+		public static final Block LIGHT_GRAY_TURF_STAIRS = null;
+		public static final Block LIGHT_GRAY_TURF_WALL = null;
 		public static final Block CYAN_TURF = null;
 		public static final Block CYAN_TURF_SLAB = null;
+		public static final Block CYAN_TURF_STAIRS = null;
+		public static final Block CYAN_TURF_WALL = null;
 		public static final Block PURPLE_TURF = null;
 		public static final Block PURPLE_TURF_SLAB = null;
+		public static final Block PURPLE_TURF_STAIRS = null;
+		public static final Block PURPLE_TURF_WALL = null;
 		public static final Block BLUE_TURF = null;
 		public static final Block BLUE_TURF_SLAB = null;
+		public static final Block BLUE_TURF_STAIRS = null;
+		public static final Block BLUE_TURF_WALL = null;
 		public static final Block BROWN_TURF = null;
 		public static final Block BROWN_TURF_SLAB = null;
+		public static final Block BROWN_TURF_STAIRS = null;
+		public static final Block BROWN_TURF_WALL = null;
 		public static final Block GREEN_TURF = null;
 		public static final Block GREEN_TURF_SLAB = null;
+		public static final Block GREEN_TURF_STAIRS = null;
+		public static final Block GREEN_TURF_WALL = null;
 		public static final Block RED_TURF = null;
 		public static final Block RED_TURF_SLAB = null;
+		public static final Block RED_TURF_STAIRS = null;
+		public static final Block RED_TURF_WALL = null;
 		public static final Block BLACK_TURF = null;
 		public static final Block BLACK_TURF_SLAB = null;
+		public static final Block BLACK_TURF_STAIRS = null;
+		public static final Block BLACK_TURF_WALL = null;
 	}
 }

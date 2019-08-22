@@ -1,0 +1,21 @@
+{
+	"replace": false,
+	"values": [
+		"turf:white_turf_stairs",
+		"turf:orange_turf_stairs",
+		"turf:magenta_turf_stairs",
+		"turf:light_blue_turf_stairs",
+		"turf:yellow_turf_stairs",
+		"turf:lime_turf_stairs",
+		"turf:pink_turf_stairs",
+		"turf:gray_turf_stairs",
+		"turf:light_gray_turf_stairs",
+		"turf:cyan_turf_stairs",
+		"turf:purple_turf_stairs",
+		"turf:blue_turf_stairs",
+		"turf:brown_turf_stairs",
+		"turf:green_turf_stairs",
+		"turf:red_turf_stairs",
+		"turf:black_turf_stairs"
+	]
+}
