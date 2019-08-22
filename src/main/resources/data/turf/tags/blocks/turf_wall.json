@@ -1,0 +1,7 @@
+{
+	"replace": false,
+	"values": [
+		"#turf:turf_wall/basic",
+		"#turf:turf_wall/dyed"
+	]
+}

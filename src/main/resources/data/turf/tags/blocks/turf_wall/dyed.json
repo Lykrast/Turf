@@ -1,0 +1,21 @@
+{
+	"replace": false,
+	"values": [
+		"turf:white_turf_wall",
+		"turf:orange_turf_wall",
+		"turf:magenta_turf_wall",
+		"turf:light_blue_turf_wall",
+		"turf:yellow_turf_wall",
+		"turf:lime_turf_wall",
+		"turf:pink_turf_wall",
+		"turf:gray_turf_wall",
+		"turf:light_gray_turf_wall",
+		"turf:cyan_turf_wall",
+		"turf:purple_turf_wall",
+		"turf:blue_turf_wall",
+		"turf:brown_turf_wall",
+		"turf:green_turf_wall",
+		"turf:red_turf_wall",
+		"turf:black_turf_wall"
+	]
+}
