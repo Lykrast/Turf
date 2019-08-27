@@ -1,2 +1,2 @@
-# Turf
+# Turf [![Curseforge](http://cf.way2muchnoise.eu/turf.svg)](https://www.curseforge.com/minecraft/mc-mods/turf) [![Curseforge](http://cf.way2muchnoise.eu/versions/turf.svg)](https://www.curseforge.com/minecraft/mc-mods/turf) [![Curseforge](http://cf.way2muchnoise.eu/packs/turf.svg)](https://www.curseforge.com/minecraft/mc-mods/turf/relations/dependents)
 Minecraft mod that adds turf blocks (solid grass)
