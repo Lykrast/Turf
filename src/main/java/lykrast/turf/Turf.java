@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -52,7 +53,7 @@ public class Turf {
 		reg.registerAll(
 				turf,
 				makeBlock("turf_slab", new SlabBlock(grassProperties())),
-				makeBlock("turf_stairs", new UseableStairsBlock(turf.getDefaultState(), grassProperties())),
+				makeBlock("turf_stairs", new StairsBlock(turf::getDefaultState, grassProperties())),
 				makeBlock("turf_wall", new WallBlock(grassProperties()))
 				);
 		for (DyeColor color : DyeColor.values()) {
@@ -61,7 +62,7 @@ public class Turf {
 			reg.registerAll(
 					dyed,
 						makeBlock(name + "_turf_slab", new SlabBlock(grassProperties())),
-						makeBlock(name + "_turf_stairs", new UseableStairsBlock(dyed.getDefaultState(), grassProperties())),
+						makeBlock(name + "_turf_stairs", new StairsBlock(dyed::getDefaultState, grassProperties())),
 						makeBlock(name + "_turf_wall", new WallBlock(grassProperties()))
 						);
 		}
