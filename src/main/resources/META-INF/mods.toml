@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[33,)"
 issueTrackerURL="https://github.com/Lykrast/Turf/issues"
 license="MIT License https://github.com/Lykrast/Turf/blob/master/LICENSE"
 
@@ -17,12 +17,12 @@ Turf blocks which are non decaying grass on all sides, for decoration. Can be dy
 [[dependencies.turf]]
     modId="forge"
     mandatory=true
-    versionRange="[32,)"
+    versionRange="[33,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.turf]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1]"
+    versionRange="[1.16.2]"
     ordering="NONE"
     side="BOTH"
