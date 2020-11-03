@@ -23,6 +23,6 @@ Turf blocks which are non decaying grass on all sides, for decoration. Can be dy
 [[dependencies.turf]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3]"
+    versionRange="[1.16.3,]"
     ordering="NONE"
     side="BOTH"
