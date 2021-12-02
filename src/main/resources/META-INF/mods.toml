@@ -5,7 +5,7 @@ license="MIT License https://github.com/Lykrast/Turf/blob/master/LICENSE"
 
 [[mods]]
 modId="turf"
-version="1.0.1"
+version="${file.jarVersion}"
 displayName="Turf"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/turf"
 credits="Quark for inspiration, DarkCow for the idea of dying them"
