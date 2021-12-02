@@ -3,23 +3,22 @@ package lykrast.turf;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.GrassColors;
-import net.minecraft.world.biome.BiomeColors;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -38,7 +37,7 @@ public class Turf {
 	}
 	
 	private static List<Item> blockitems;
-	public static final ItemGroup ITEM_GROUP = new ItemGroup(ItemGroup.getGroupCountSafe(), MODID) {
+	public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), MODID) {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(Holders.TURF);
@@ -53,7 +52,7 @@ public class Turf {
 		reg.registerAll(
 				turf,
 				makeBlock("turf_slab", new SlabBlock(grassProperties())),
-				makeBlock("turf_stairs", new StairsBlock(turf::defaultBlockState, grassProperties())),
+				makeBlock("turf_stairs", new StairBlock(turf::defaultBlockState, grassProperties())),
 				makeBlock("turf_wall", new WallBlock(grassProperties()))
 				);
 		for (DyeColor color : DyeColor.values()) {
@@ -62,7 +61,7 @@ public class Turf {
 			reg.registerAll(
 					dyed,
 						makeBlock(name + "_turf_slab", new SlabBlock(grassProperties())),
-						makeBlock(name + "_turf_stairs", new StairsBlock(dyed::defaultBlockState, grassProperties())),
+						makeBlock(name + "_turf_stairs", new StairBlock(dyed::defaultBlockState, grassProperties())),
 						makeBlock(name + "_turf_wall", new WallBlock(grassProperties()))
 						);
 		}
@@ -84,7 +83,7 @@ public class Turf {
 	private static Block.Properties grassProperties() {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
 		//Also harvest tool, that's a forge thing
-		return Block.Properties.of(Material.GRASS).strength(0.6F).sound(SoundType.GRASS).harvestTool(ToolType.SHOVEL);
+		return Block.Properties.of(Material.GRASS).strength(0.6F).sound(SoundType.GRASS);
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
@@ -92,9 +91,9 @@ public class Turf {
 		ItemColors icolors = Minecraft.getInstance().getItemColors();
 		
 		//Copy pasted and simplified the grass one
-		bcolors.register((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5, 1),
+		bcolors.register((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5, 1),
 				Holders.TURF, Holders.TURF_SLAB, Holders.TURF_STAIRS, Holders.TURF_WALL);
-		icolors.register((stack, tintIndex) -> GrassColors.get(0.5, 1), Holders.TURF.asItem(), Holders.TURF_SLAB.asItem(), Holders.TURF_STAIRS.asItem(), Holders.TURF_WALL.asItem());
+		icolors.register((stack, tintIndex) -> GrassColor.get(0.5, 1), Holders.TURF.asItem(), Holders.TURF_SLAB.asItem(), Holders.TURF_STAIRS.asItem(), Holders.TURF_WALL.asItem());
 		
 		//That's the part where I should make a loop
 		int white = DyeColor.WHITE.getMaterialColor().col;

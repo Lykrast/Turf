@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[38,)"
 issueTrackerURL="https://github.com/Lykrast/Turf/issues"
 license="MIT License https://github.com/Lykrast/Turf/blob/master/LICENSE"
 
 [[mods]]
 modId="turf"
-version="${version}"
+version="1.0.1"
 displayName="Turf"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/turf"
 credits="Quark for inspiration, DarkCow for the idea of dying them"
@@ -17,12 +17,12 @@ Turf blocks which are non decaying grass on all sides, for decoration. Can be dy
 [[dependencies.turf]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[38,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.turf]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3,]"
+    versionRange="[1.18,]"
     ordering="NONE"
     side="BOTH"
