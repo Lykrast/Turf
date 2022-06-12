@@ -8,6 +8,7 @@ modId="turf"
 version="${file.jarVersion}"
 displayName="Turf"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/turf"
+logoFile="logo.png"
 credits="Quark for inspiration, DarkCow for the idea of dying them"
 authors="Lykrast"
 description='''
