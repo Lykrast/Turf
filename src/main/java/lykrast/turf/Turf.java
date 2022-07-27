@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
@@ -23,9 +20,9 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.material.Material;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,7 +34,8 @@ public class Turf {
 	public static final String MODID = "turf";
 	
 	public Turf() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColors);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerItemColors);
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		BLOCKS.register(bus);
 		ITEMS.register(bus);
@@ -99,20 +97,16 @@ public class Turf {
 		//Also harvest tool, that's a forge thing
 		return Block.Properties.of(Material.GRASS).strength(0.6F).sound(SoundType.GRASS);
 	}
-
-	private void doClientStuff(final FMLClientSetupEvent event) {
-		//Look how clean it is now!!
-		BlockColors bcolors = Minecraft.getInstance().getBlockColors();
-		ItemColors icolors = Minecraft.getInstance().getItemColors();
-		
-		for (var t : blocksToColor) {
-			bcolors.register(t.getB(), t.getA().get());
-		}
-		for (var t : itemsToColor) {
-			icolors.register(t.getB(), t.getA().get());
-		}
+	
+	private void registerBlockColors(final RegisterColorHandlersEvent.Block event) {
+		for (var t : blocksToColor) event.register(t.getB(), t.getA().get());
 		//Don't need them after that, hopefully that lets them be garbage collected
 		blocksToColor = null;
+	}
+	
+	private void registerItemColors(final RegisterColorHandlersEvent.Item event) {
+		for (var t : itemsToColor) event.register(t.getB(), t.getA().get());
+		//Don't need them after that, hopefully that lets them be garbage collected
 		itemsToColor = null;
 	}
 }
