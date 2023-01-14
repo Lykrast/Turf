@@ -1,0 +1,13 @@
+{
+	"type": "mekanism:painting",
+	"conditions": [{ "type": "forge:mod_loaded", "modid": "mekanism" }],
+	"chemicalInput": { "amount": 24, "pigment": "mekanism:light_blue" },
+	"itemInput": {
+		"ingredient": {
+			"type": "forge:difference",
+			"base": { "tag": "turf:turf_stairs" },
+			"subtracted": { "item": "turf:light_blue_turf_stairs" }
+		}
+	},
+	"output": { "item": "turf:light_blue_turf_stairs" }
+}

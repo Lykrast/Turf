@@ -1,0 +1,8 @@
+{
+	"type": "mekanism:pigment_extracting",
+	"conditions": [{ "type": "forge:mod_loaded", "modid": "mekanism" }],
+	"input": {
+		"ingredient": { "item": "turf:purple_turf_slab" }
+	},
+	"output": { "amount": 16, "pigment": "mekanism:purple" }
+}

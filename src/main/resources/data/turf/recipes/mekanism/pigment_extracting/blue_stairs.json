@@ -1,0 +1,8 @@
+{
+	"type": "mekanism:pigment_extracting",
+	"conditions": [{ "type": "forge:mod_loaded", "modid": "mekanism" }],
+	"input": {
+		"ingredient": { "item": "turf:blue_turf_stairs" }
+	},
+	"output": { "amount": 24, "pigment": "mekanism:blue" }
+}

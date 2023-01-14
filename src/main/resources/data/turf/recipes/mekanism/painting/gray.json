@@ -1,0 +1,13 @@
+{
+	"type": "mekanism:painting",
+	"conditions": [{ "type": "forge:mod_loaded", "modid": "mekanism" }],
+	"chemicalInput": { "amount": 32, "pigment": "mekanism:gray" },
+	"itemInput": {
+		"ingredient": {
+			"type": "forge:difference",
+			"base": { "tag": "turf:turf" },
+			"subtracted": { "item": "turf:gray_turf" }
+		}
+	},
+	"output": { "item": "turf:gray_turf" }
+}

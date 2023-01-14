@@ -1,0 +1,13 @@
+{
+	"type": "mekanism:painting",
+	"conditions": [{ "type": "forge:mod_loaded", "modid": "mekanism" }],
+	"chemicalInput": { "amount": 16, "pigment": "mekanism:green" },
+	"itemInput": {
+		"ingredient": {
+			"type": "forge:difference",
+			"base": { "tag": "turf:turf_slab" },
+			"subtracted": { "item": "turf:green_turf_slab" }
+		}
+	},
+	"output": { "item": "turf:green_turf_slab" }
+}
