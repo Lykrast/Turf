@@ -68,5 +68,14 @@
     "block.turf.black_turf_stairs": "Black Turf Stairs",
     "block.turf.black_turf_wall": "Black Turf Wall",
 	
+    "block.turf.dark_red_turf": "Dark Red Turf",
+    "block.turf.dark_red_turf_slab": "Dark Red Turf Slab",
+    "block.turf.dark_red_turf_stairs": "Dark Red Turf Stairs",
+    "block.turf.dark_red_turf_wall": "Dark Red Turf Wall",
+    "block.turf.aqua_turf": "Aqua Turf",
+    "block.turf.aqua_turf_slab": "Aqua Turf Slab",
+    "block.turf.aqua_turf_stairs": "Aqua Turf Stairs",
+    "block.turf.aqua_turf_wall": "Aqua Turf Wall",
+	
     "itemGroup.turf": "Turf"
 }

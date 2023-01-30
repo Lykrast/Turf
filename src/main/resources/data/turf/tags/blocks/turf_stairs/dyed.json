@@ -16,6 +16,8 @@
 		"turf:brown_turf_stairs",
 		"turf:green_turf_stairs",
 		"turf:red_turf_stairs",
-		"turf:black_turf_stairs"
+		"turf:black_turf_stairs",
+		"turf:dark_red_turf_stairs",
+		"turf:aqua_turf_stairs"
 	]
 }

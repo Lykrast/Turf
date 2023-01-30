@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                { "type": "minecraft:item", "name": "turf:aqua_turf_stairs" }
+            ],
+            "conditions": [
+                { "condition": "minecraft:survives_explosion" }
+            ]
+        }
+    ]
+}

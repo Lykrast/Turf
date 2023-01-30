@@ -32,6 +32,8 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = Turf.MODID)
 public class Turf {
 	public static final String MODID = "turf";
+	//Uuuuuuuuuugh can't put them above the declarations in the enum, and if I put below then can't use in the constructors
+	public static final String MEKANISM = "mekanism", DYENAMICS = "dyenamics";
 	
 	public Turf() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColors);
@@ -62,28 +64,30 @@ public class Turf {
 		BlockColor grassB = (state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5, 1);
 		ItemColor grassI = (stack, tintIndex) -> GrassColor.get(0.5, 1);
 		
-		RegistryObject<Block> turf = makeTurfBlock("turf", () -> new Block(grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), grassB, grassI);
+		RegistryObject<Block> turf = makeTurfBlock("turf", () -> new Block(grassProperties()), grassB, grassI, true);
+		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), grassB, grassI, true);
+		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), grassB, grassI, true);
+		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), grassB, grassI, true);
 		
 		for (TurfColor color : TurfColor.values()) {
-			if (!color.shouldRegister()) continue;
 			String name = color.getName();
 			MaterialColor matColor = color.getMaterialColor();
+			boolean shouldRegister = color.shouldRegister();
 			BlockColor bColor = (state, world, pos, tintIndex) -> color.getColor();
 			ItemColor iColor = (stack, tintIndex) -> color.getColor();
 			
-			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), bColor, iColor);
+			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), bColor, iColor, shouldRegister);
+			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), bColor, iColor, shouldRegister);
+			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), bColor, iColor, shouldRegister);
+			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), bColor, iColor, shouldRegister);
 		}
 	}
 
-	private static RegistryObject<Block> makeTurfBlock(String name, Supplier<Block> block, BlockColor bcolor, ItemColor icolor) {
+	private static RegistryObject<Block> makeTurfBlock(String name, Supplier<Block> block, BlockColor bcolor, ItemColor icolor, boolean visible) {
 		RegistryObject<Block> reggedBlock = BLOCKS.register(name, block);
-		RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties()).tab(ITEM_GROUP)));
+		//Blueprint's (TeamAbnormals) way of compat items : just hide from the creative tab when no compat
+		//Sadly conditional loot tables (in the same way as condtionnal recipes) don't currently exist
+		RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties()).tab(visible ? ITEM_GROUP : null)));
 		blocksToColor.add(new Tuple<>(reggedBlock, bcolor));
 		itemsToColor.add(new Tuple<>(reggedItem, icolor));
 		

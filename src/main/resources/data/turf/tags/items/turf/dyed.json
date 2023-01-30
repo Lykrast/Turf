@@ -16,6 +16,8 @@
 		"turf:brown_turf",
 		"turf:green_turf",
 		"turf:red_turf",
-		"turf:black_turf"
+		"turf:black_turf",
+		"turf:dark_red_turf",
+		"turf:aqua_turf"
 	]
 }

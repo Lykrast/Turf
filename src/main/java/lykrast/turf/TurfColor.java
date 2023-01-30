@@ -25,7 +25,11 @@ public enum TurfColor {
 	BROWN("brown", 8606770, MaterialColor.COLOR_BROWN),
 	GREEN("green", 6192150, MaterialColor.COLOR_GREEN),
 	RED("red", 10040115, MaterialColor.COLOR_RED), //Old color, new would have been 11546150
-	BLACK("black", 1908001, MaterialColor.COLOR_BLACK);
+	BLACK("black", 1908001, MaterialColor.COLOR_BLACK),
+	//Mekanism
+	DARK_RED("dark_red", 7340544, MaterialColor.NETHER, Turf.MEKANISM), //{201, 7, 31} = 0xC9071F, sadly brighter than base red so using material color
+	AQUA("aqua", 0x30FFF9, MaterialColor.COLOR_LIGHT_BLUE, Turf.MEKANISM); //{48, 255, 249}
+	
 
 	private final String name;
 	@Nullable private final String requiredMod;
