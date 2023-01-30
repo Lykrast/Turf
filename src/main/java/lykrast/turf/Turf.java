@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GrassColor;
@@ -20,6 +19,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -67,15 +67,17 @@ public class Turf {
 		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), grassB, grassI);
 		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), grassB, grassI);
 		
-		for (DyeColor color : DyeColor.values()) {
+		for (TurfColor color : TurfColor.values()) {
+			if (!color.shouldRegister()) continue;
 			String name = color.getName();
-			BlockColor bColor = (state, world, pos, tintIndex) -> color.getMaterialColor().col;
-			ItemColor iColor = (stack, tintIndex) -> color.getMaterialColor().col;
+			MaterialColor matColor = color.getMaterialColor();
+			BlockColor bColor = (state, world, pos, tintIndex) -> color.getColor();
+			ItemColor iColor = (stack, tintIndex) -> color.getColor();
 			
-			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties()), bColor, iColor);
-			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties()), bColor, iColor);
-			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties()), bColor, iColor);
-			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties()), bColor, iColor);
+			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), bColor, iColor);
+			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), bColor, iColor);
+			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), bColor, iColor);
+			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), bColor, iColor);
 		}
 	}
 
@@ -94,8 +96,12 @@ public class Turf {
 	
 	private static Block.Properties grassProperties() {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
-		//Also harvest tool, that's a forge thing
 		return Block.Properties.of(Material.GRASS).strength(0.6F).sound(SoundType.GRASS);
+	}
+	
+	private static Block.Properties grassProperties(MaterialColor color) {
+		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
+		return Block.Properties.of(Material.GRASS, color).strength(0.6F).sound(SoundType.GRASS);
 	}
 	
 	private void registerBlockColors(final RegisterColorHandlersEvent.Block event) {
