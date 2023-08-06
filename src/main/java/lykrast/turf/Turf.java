@@ -4,15 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -20,7 +16,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -34,8 +29,6 @@ public class Turf {
 	public static final String MODID = "turf";
 	
 	public Turf() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColors);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerItemColors);
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		BLOCKS.register(bus);
 		ITEMS.register(bus);
@@ -51,41 +44,36 @@ public class Turf {
 		}
 	};
 	
-	//Hey look I actually cleaned it up!
-	private static List<Tuple<RegistryObject<Block>, BlockColor>> blocksToColor = new ArrayList<>();
-	private static List<Tuple<RegistryObject<Item>, ItemColor>> itemsToColor = new ArrayList<>();
-	
 	private static RegistryObject<Item> turfItem;
 	
+	//This is full of duct tape
+	public static List<Tuple<RegistryObject<Block>, TurfColor>> blocksToColor = new ArrayList<>();
+	public static List<Tuple<RegistryObject<Item>, TurfColor>> itemsToColor = new ArrayList<>();
+	
 	static {
-		//Copy pasted and simplified the grass one
-		BlockColor grassB = (state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5, 1);
-		ItemColor grassI = (stack, tintIndex) -> GrassColor.get(0.5, 1);
-		
-		RegistryObject<Block> turf = makeTurfBlock("turf", () -> new Block(grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), grassB, grassI);
-		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), grassB, grassI);
+		//null for the default turf
+		RegistryObject<Block> turf = makeTurfBlock("turf", () -> new Block(grassProperties()), null);
+		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), null);
+		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), null);
+		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), null);
 		
 		for (TurfColor color : TurfColor.values()) {
 			if (!color.shouldRegister()) continue;
 			String name = color.getName();
 			MaterialColor matColor = color.getMaterialColor();
-			BlockColor bColor = (state, world, pos, tintIndex) -> color.getColor();
-			ItemColor iColor = (stack, tintIndex) -> color.getColor();
 			
-			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), bColor, iColor);
-			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), bColor, iColor);
+			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), color);
+			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), color);
+			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), color);
+			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), color);
 		}
 	}
 
-	private static RegistryObject<Block> makeTurfBlock(String name, Supplier<Block> block, BlockColor bcolor, ItemColor icolor) {
+	private static RegistryObject<Block> makeTurfBlock(String name, Supplier<Block> block, TurfColor color) {
 		RegistryObject<Block> reggedBlock = BLOCKS.register(name, block);
 		RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties()).tab(ITEM_GROUP)));
-		blocksToColor.add(new Tuple<>(reggedBlock, bcolor));
-		itemsToColor.add(new Tuple<>(reggedItem, icolor));
+		blocksToColor.add(new Tuple<>(reggedBlock, color));
+		itemsToColor.add(new Tuple<>(reggedItem, color));
 		
 		//So uh the way I did this I can't cleanly extract the turf block item without rewritting this
 		//so instead here's a hack cause I know I'm making the normal turf first
@@ -102,17 +90,5 @@ public class Turf {
 	private static Block.Properties grassProperties(MaterialColor color) {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
 		return Block.Properties.of(Material.GRASS, color).strength(0.6F).sound(SoundType.GRASS);
-	}
-	
-	private void registerBlockColors(final RegisterColorHandlersEvent.Block event) {
-		for (var t : blocksToColor) event.register(t.getB(), t.getA().get());
-		//Don't need them after that, hopefully that lets them be garbage collected
-		blocksToColor = null;
-	}
-	
-	private void registerItemColors(final RegisterColorHandlersEvent.Item event) {
-		for (var t : itemsToColor) event.register(t.getB(), t.getA().get());
-		//Don't need them after that, hopefully that lets them be garbage collected
-		itemsToColor = null;
 	}
 }
