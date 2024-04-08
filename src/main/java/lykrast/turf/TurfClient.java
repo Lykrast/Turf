@@ -41,8 +41,8 @@ public class TurfClient {
 	@SubscribeEvent
 	public static void registerItemColors(final RegisterColorHandlersEvent.Item event) {
 		for (var t : Turf.itemsToColor) event.register(colorI(t.getB()), t.getA().get());
-		//Don't need them after that, hopefully that lets them be garbage collected
-		Turf.itemsToColor = null;
+		//No I'm keeping it for making the creative tab
+		//Turf.itemsToColor = null;
 	}
 
 }

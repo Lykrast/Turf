@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,6 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod(Turf.MODID)
@@ -32,10 +37,22 @@ public class Turf {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		BLOCKS.register(bus);
 		ITEMS.register(bus);
+		bus.addListener(Turf::makeCreativeTab);
 	}
 
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+	
+	public static void makeCreativeTab(RegisterEvent event) {
+		event.register(Registries.CREATIVE_MODE_TAB, helper -> {
+			helper.register(ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(MODID, "turf")),
+					CreativeModeTab.builder()
+					.title(Component.translatable("itemGroup.turf"))
+					.icon(() -> new ItemStack(turfItem.get()))
+					.displayItems((parameters, output) -> itemsToColor.forEach(t -> output.accept(t.getA().get())))
+					.build());
+		});
+	}
 	
 //	public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), MODID) {
 //		@Override
@@ -53,8 +70,8 @@ public class Turf {
 	static {
 		//null for the default turf
 		RegistryObject<Block> turf = makeTurfBlock("turf", () -> new Block(grassProperties()), null);
-		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), null);
 		makeTurfBlock("turf_stairs", () -> new StairBlock(() -> turf.get().defaultBlockState(), grassProperties()), null);
+		makeTurfBlock("turf_slab", () -> new SlabBlock(grassProperties()), null);
 		makeTurfBlock("turf_wall", () -> new WallBlock(grassProperties()), null);
 		
 		for (TurfColor color : TurfColor.values()) {
@@ -63,8 +80,8 @@ public class Turf {
 			MapColor matColor = color.getMapColor();
 			
 			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), color);
-			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), color);
 			makeTurfBlock(name + "_turf_stairs", () -> new StairBlock(() -> dyed.get().defaultBlockState(), grassProperties(matColor)), color);
+			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), color);
 			makeTurfBlock(name + "_turf_wall", () -> new WallBlock(grassProperties(matColor)), color);
 		}
 	}
