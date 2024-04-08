@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -37,12 +37,12 @@ public class Turf {
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	
-	public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), MODID) {
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(turfItem.get());
-		}
-	};
+//	public static final CreativeModeTab ITEM_GROUP = new CreativeModeTab(CreativeModeTab.getGroupCountSafe(), MODID) {
+//		@Override
+//		public ItemStack makeIcon() {
+//			return new ItemStack(turfItem.get());
+//		}
+//	};
 	
 	private static RegistryObject<Item> turfItem;
 	
@@ -60,7 +60,7 @@ public class Turf {
 		for (TurfColor color : TurfColor.values()) {
 			if (!color.shouldRegister()) continue;
 			String name = color.getName();
-			MaterialColor matColor = color.getMaterialColor();
+			MapColor matColor = color.getMapColor();
 			
 			RegistryObject<Block> dyed = makeTurfBlock(name + "_turf", () -> new Block(grassProperties(matColor)), color);
 			makeTurfBlock(name + "_turf_slab", () -> new SlabBlock(grassProperties(matColor)), color);
@@ -71,7 +71,8 @@ public class Turf {
 
 	private static RegistryObject<Block> makeTurfBlock(String name, Supplier<Block> block, TurfColor color) {
 		RegistryObject<Block> reggedBlock = BLOCKS.register(name, block);
-		RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties()).tab(ITEM_GROUP)));
+		//RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties()).tab(ITEM_GROUP)));
+		RegistryObject<Item> reggedItem = ITEMS.register(name, () -> new BlockItem(reggedBlock.get(), (new Item.Properties())));
 		blocksToColor.add(new Tuple<>(reggedBlock, color));
 		itemsToColor.add(new Tuple<>(reggedItem, color));
 		
@@ -84,11 +85,11 @@ public class Turf {
 	
 	private static Block.Properties grassProperties() {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
-		return Block.Properties.of(Material.GRASS).strength(0.6F).sound(SoundType.GRASS);
+		return BlockBehaviour.Properties.of().mapColor(MapColor.GRASS).strength(0.6F).sound(SoundType.GRASS);
 	}
 	
-	private static Block.Properties grassProperties(MaterialColor color) {
+	private static Block.Properties grassProperties(MapColor color) {
 		//Grass ticks randomly, I don't want that but there's no method to turn it off, so just copying stuff manually
-		return Block.Properties.of(Material.GRASS, color).strength(0.6F).sound(SoundType.GRASS);
+		return BlockBehaviour.Properties.of().mapColor(color).strength(0.6F).sound(SoundType.GRASS);
 	}
 }
